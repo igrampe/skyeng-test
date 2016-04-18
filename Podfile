@@ -5,7 +5,7 @@ inhibit_all_warnings!
 
 def data_pods
     pod 'EasyMapping', '~> 0.15.3'
-    pod 'Realm', '~> 0.96'
+    pod 'Realm', '~> 0.98.8'
 end
 
 def network_pods
@@ -19,6 +19,9 @@ end
 def ui_pods
     pod 'PureLayout', '~> 3.0.1'
     pod 'SVProgressHUD'
+    pod 'UIAlertView+Blocks'
+    pod 'SDWebImage'
+    pod 'PureLayout'
 end
 
 def sdk_pods

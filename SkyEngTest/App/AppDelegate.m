@@ -7,16 +7,25 @@
 //
 
 #import "AppDelegate.h"
+#import "SEAppDependency.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) SEAppDependency *appDependency;
 
 @end
 
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [self.appDependency applicationSetup:application launchOptions:launchOptions];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
+    [self.appDependency installRootViewControllerIntoWindow:self.window];
+    
     return YES;
 }
 
@@ -40,6 +49,17 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Lazy
+
+- (SEAppDependency *)appDependency
+{
+    if (!_appDependency)
+    {
+        _appDependency = [SEAppDependency new];
+    }
+    return _appDependency;
 }
 
 @end
