@@ -15,24 +15,32 @@
 
 @property (nonatomic, weak) SEServiceLocator *serviceLocator;
 
-- (void)restartTrainingSessionWithTasksCount:(NSInteger)tasksCount;
+#pragma mark - Training Session
 
-- (BOOL)isTrainingSessionStarted;
-- (void)startTrainingSession;
+#pragma mark -- Actions
 
-- (NSInteger)currentTrainingTaskIndex;
+- (void)trainingSessionGenerateWithTasksCount:(NSInteger)tasksCount;
+- (void)trainingSessionStart;
+- (void)trainingSessionSetAlternativesForTask:(SEWordTaskPonso *)task;
+- (void)trainingSessionSkipTaskAtIndex:(NSInteger)taskIndex;
+- (void)trainingSessionSelectAlternativeAtIndex:(NSInteger)alternativeIndex forTaskAtIndex:(NSInteger)taskIndex;
+- (void)trainingSessionNextTask;
+- (void)trainingSessionReset;
+
+#pragma mark -- Getters
+
+- (BOOL)trainingSessionIsStarted;
+- (BOOL)trainingSessionIsFinished;
+
+- (NSInteger)trainingSessionCurrentTaskIndex;
 - (NSInteger)trainingSessionTotalTasksCount;
 - (NSInteger)trainingSessionTaskIdAtIndex:(NSInteger)taskIndex;
 - (NSArray *)trainingSessionTasksIds;
-- (void)trainingSessionSetAlternativesForTask:(SEWordTaskPonso *)task;
+
 - (NSArray *)trainingSessionAlternativesForTaskAtIndex:(NSInteger)index;
 - (NSInteger)trainingSessionCorrectAlternativeIndexForTaskAtIndex:(NSInteger)taskIndex;
-- (void)trainingSessionSkipTaskAtIndex:(NSInteger)taskIndex;
-- (void)trainingSessionSelectAlternativeAtIndex:(NSInteger)alternativeIndex forTaskAtIndex:(NSInteger)taskIndex;
+
 - (NSInteger)trainingSessionAnswerIndexForTaskAtIndex:(NSInteger)taskIndex;
-- (void)trainingSessionNextTask;
-- (BOOL)isTrainingSessionFinished;
 - (NSUInteger)trainingSessionCorrectAnswersCount;
-- (void)trainingSessionReset;
 
 @end

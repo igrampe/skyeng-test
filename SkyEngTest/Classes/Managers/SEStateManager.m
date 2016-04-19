@@ -29,14 +29,11 @@
     return self;
 }
 
-- (void)start
-{
-    
-}
+#pragma mark - Training Session
 
-#pragma mark - Public
+#pragma mark -- Actions
 
-- (void)restartTrainingSessionWithTasksCount:(NSInteger)tasksCount
+- (void)trainingSessionGenerateWithTasksCount:(NSInteger)tasksCount
 {
     NSInteger totalCount = [self.serviceLocator.dataManager totalDictionarySize];
     NSArray *rndIndexes = [self.trainingSession generateSequenceWithTasksCount:tasksCount totalCount:totalCount];
@@ -45,17 +42,49 @@
     self.trainingSession.tasksIds = ids;
 }
 
-- (BOOL)isTrainingSessionStarted
-{
-    return (self.trainingSession.currentTaskIndex >= 0);
-}
-
-- (void)startTrainingSession
+- (void)trainingSessionStart
 {
     [self.trainingSession start];
 }
 
-- (NSInteger)currentTrainingTaskIndex
+- (void)trainingSessionSetAlternativesForTask:(SEWordTaskPonso *)task
+{
+    [self.trainingSession setAlternativesForTask:task];
+}
+
+- (void)trainingSessionSkipTaskAtIndex:(NSInteger)taskIndex
+{
+    [self.trainingSession skipTaskAtIndex:taskIndex];
+}
+
+- (void)trainingSessionSelectAlternativeAtIndex:(NSInteger)alternativeIndex forTaskAtIndex:(NSInteger)taskIndex
+{
+    [self.trainingSession selectAlternativeAtIndex:alternativeIndex forTaskAtIndex:taskIndex];
+}
+
+- (void)trainingSessionNextTask
+{
+    self.trainingSession.currentTaskIndex++;
+}
+
+- (void)trainingSessionReset
+{
+    [self.trainingSession reset];
+}
+
+#pragma mark -- Getters
+
+- (BOOL)trainingSessionIsStarted
+{
+    return (self.trainingSession.currentTaskIndex >= 0);
+}
+
+- (BOOL)trainingSessionIsFinished
+{
+    return (self.trainingSession.currentTaskIndex == self.trainingSession.totalTasksCount);
+}
+
+- (NSInteger)trainingSessionCurrentTaskIndex
 {
     return self.trainingSession.currentTaskIndex;
 }
@@ -75,11 +104,6 @@
     return [self.trainingSession tasksIds];
 }
 
-- (void)trainingSessionSetAlternativesForTask:(SEWordTaskPonso *)task
-{
-    [self.trainingSession setAlternativesForTask:task];
-}
-
 - (NSArray *)trainingSessionAlternativesForTaskAtIndex:(NSInteger)index
 {
     return [self.trainingSession alternativesForTaskAtIndex:index];
@@ -90,39 +114,14 @@
     return [self.trainingSession correctAnswerIndexForTaskAtIndex:taskIndex];
 }
 
-- (void)trainingSessionSkipTaskAtIndex:(NSInteger)taskIndex
-{
-    [self.trainingSession skipTaskAtIndex:taskIndex];
-}
-
-- (void)trainingSessionSelectAlternativeAtIndex:(NSInteger)alternativeIndex forTaskAtIndex:(NSInteger)taskIndex
-{
-    [self.trainingSession selectAlternativeAtIndex:alternativeIndex forTaskAtIndex:taskIndex];
-}
-
 - (NSInteger)trainingSessionAnswerIndexForTaskAtIndex:(NSInteger)taskIndex
 {
     return [self.trainingSession answerIndexForTaskAtIndex:taskIndex];
 }
 
-- (void)trainingSessionNextTask
-{
-    self.trainingSession.currentTaskIndex++;
-}
-
-- (BOOL)isTrainingSessionFinished
-{
-    return (self.trainingSession.currentTaskIndex == self.trainingSession.totalTasksCount);
-}
-
 - (NSUInteger)trainingSessionCorrectAnswersCount
 {
     return [self.trainingSession correctAnswersCount];
-}
-
-- (void)trainingSessionReset
-{
-    [self.trainingSession reset];
 }
 
 @end

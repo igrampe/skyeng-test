@@ -42,9 +42,9 @@
 
 - (void)viewWillAppear
 {
-    if ([self.serviceLocator.stateManager isTrainingSessionStarted])
+    if ([self.serviceLocator.stateManager trainingSessionIsStarted])
     {
-        NSInteger currentTaskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];
+        NSInteger currentTaskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
         if (currentTaskIndex < [self.serviceLocator.stateManager trainingSessionTotalTasksCount])
         {
             [self _showNextTaskAnimated:NO];
@@ -70,7 +70,7 @@
                                                           selector:@selector(_showTaskInfoTrigger)
                                                           userInfo:nil
                                                            repeats:NO];
-    NSInteger taskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];
+    NSInteger taskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
     [self.serviceLocator.stateManager trainingSessionSelectAlternativeAtIndex:index forTaskAtIndex:taskIndex];
     [self _showAnswer];
 }
@@ -87,14 +87,14 @@
                                                           selector:@selector(_showTaskInfoTrigger)
                                                           userInfo:nil
                                                            repeats:NO];
-    NSInteger taskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];
+    NSInteger taskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
     [self.serviceLocator.stateManager trainingSessionSkipTaskAtIndex:taskIndex];
     [self _showAnswer];
 }
 
 - (void)actionStart
 {
-    [self.serviceLocator.stateManager restartTrainingSessionWithTasksCount:3];
+    [self.serviceLocator.stateManager trainingSessionGenerateWithTasksCount:3];
     [self.viewController showLoader];
     [self _obtainInfoForTrainingSession];
 }
@@ -102,7 +102,7 @@
 - (void)actionNext
 {
     [self.serviceLocator.stateManager trainingSessionNextTask];
-    if ([self.serviceLocator.stateManager isTrainingSessionFinished])
+    if ([self.serviceLocator.stateManager trainingSessionIsFinished])
     {
         [self _showResults];
     } else
@@ -150,7 +150,7 @@
 
 - (void)_showNextTaskAnimated:(BOOL)animated
 {
-    NSInteger currentTaskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];            
+    NSInteger currentTaskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];            
     [self.viewController showTaskAtIndex:currentTaskIndex animated:animated];
     [self.viewController showProgress:((double)(currentTaskIndex))/[self.serviceLocator.stateManager trainingSessionTotalTasksCount]
                              animated:YES];
@@ -158,7 +158,7 @@
 
 - (void)_showAnswer
 {
-    NSInteger currentTaskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];
+    NSInteger currentTaskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
     NSInteger correctIndex = [self.serviceLocator.stateManager trainingSessionCorrectAlternativeIndexForTaskAtIndex:currentTaskIndex];
     NSInteger answerIndex = [self.serviceLocator.stateManager trainingSessionAnswerIndexForTaskAtIndex:currentTaskIndex];
     [self.viewController highlightItemAtIndex:correctIndex asCorrect:YES forTaskAtIndex:currentTaskIndex];
@@ -172,7 +172,7 @@
 {
     [self.showAnswerTimer invalidate];
     self.showAnswerTimer = nil;
-    NSInteger currentTaskIndex = [self.serviceLocator.stateManager currentTrainingTaskIndex];
+    NSInteger currentTaskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
     [self.viewController showTaskInfoAtIndex:currentTaskIndex];
 }
 
@@ -202,7 +202,7 @@
         {
             [self.serviceLocator.dataManager clearTasks];
             [self.serviceLocator.dataManager addTasks:objects];
-            [self.serviceLocator.stateManager startTrainingSession];
+            [self.serviceLocator.stateManager trainingSessionStart];
             NSInteger count = [self.serviceLocator.stateManager trainingSessionTotalTasksCount];
             for (NSInteger i = 0; i < count; i++)
             {
