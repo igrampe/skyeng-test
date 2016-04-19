@@ -8,6 +8,7 @@
 
 #import "SEWordTaskPonso.h"
 #import "SEWordTaskAlternativePonso.h"
+#import "NSString+Helpers.h"
 
 @implementation SEWordTaskPonso
 
@@ -32,14 +33,7 @@
             NSString *result = nil;
             if ([value isKindOfClass:[NSString class]])
             {
-                NSString *str = (NSString *)value;
-                if ([str hasPrefix:@"//"] && str.length > 2)
-                {
-                    result = [@"http:" stringByAppendingString:str];
-                } else
-                {
-                    result = str;
-                }
+                result = [(NSString *)value fixedUrlString];
             }
             
             return result;
@@ -55,21 +49,16 @@
             
             if ([value isKindOfClass:[NSArray class]])
             {
-                NSMutableArray *mArray = [NSMutableArray new];
+                NSMutableArray *mArr = [NSMutableArray new];
                 NSArray *arr = (NSArray *)value;
                 for (NSString *v in arr)
                 {
                     if ([v isKindOfClass:[NSString class]])
                     {
-                        NSString *str = (NSString *)v;
-                        if ([str hasPrefix:@"//"] && str.length > 2)
-                        {
-                            str = [@"http:" stringByAppendingString:str];
-                        }
-                        [mArray addObject:str];
+                        [mArr addObject:[(NSString *)v fixedUrlString]];
                     }
                 }
-                result = [NSArray arrayWithArray:mArray];
+                result = [NSArray arrayWithArray:mArr];
             }
             
             return result;
