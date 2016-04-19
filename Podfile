@@ -17,7 +17,6 @@ def analytics_pods
 end
 
 def ui_pods
-    pod 'PureLayout', '~> 3.0.1'
     pod 'SVProgressHUD'
     pod 'UIAlertView+Blocks'
     pod 'SDWebImage'
