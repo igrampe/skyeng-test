@@ -72,6 +72,24 @@
 
 #pragma mark - Public
 
+#pragma mark -- Actions
+
+- (void)start
+{
+    self.currentTaskIndex = 0;
+    [self.correctAnswers removeAllObjects];
+}
+
+- (void)reset
+{
+    self.currentTaskIndex = 0;
+    self.totalTasksCount = 0;
+    [self.alternatives removeAllObjects];
+    [self.answers removeAllObjects];
+    [self.correctAnswers removeAllObjects];
+    self.meaningRandomIndexesSet = nil;
+}
+
 - (NSArray *)generateSequenceWithTasksCount:(NSInteger)tasksCount totalCount:(NSInteger)totalCount
 {
     self.totalTasksCount = tasksCount;
@@ -107,32 +125,6 @@
     return [self.meaningRandomIndexesSet allObjects];
 }
 
-- (void)start
-{
-    self.currentTaskIndex = 0;
-    [self.correctAnswers removeAllObjects];
-}
-
-- (void)reset
-{
-    self.currentTaskIndex = 0;
-    self.totalTasksCount = 0;
-    [self.alternatives removeAllObjects];
-    [self.answers removeAllObjects];
-    [self.correctAnswers removeAllObjects];
-    self.meaningRandomIndexesSet = nil;
-}
-
-- (NSInteger)taskIdAtIndex:(NSInteger)index
-{
-    NSInteger result = 0;
-    if (index < self.totalTasksCount)
-    {
-        result = [[self.tasksIds objectAtIndex:index] integerValue];
-    }
-    return result;
-}
-
 - (void)setAlternativesForTask:(SEWordTaskPonso *)task
 {
     SEWordTaskAlternativePonso *alt = [SEWordTaskAlternativePonso new];
@@ -143,6 +135,30 @@
     [alts shuffle];
     [self.correctAnswers setObject:alt forKey:@(task.meaningId)];
     [self.alternatives setObject:alts forKey:@(task.meaningId)];
+}
+
+- (void)skipTaskAtIndex:(NSInteger)taskIndex
+{
+    NSInteger taskId = [self taskIdAtIndex:taskIndex];
+    [self.answers setObject:@(-1) forKey:@(taskId)];
+}
+
+- (void)selectAlternativeAtIndex:(NSInteger)alternativeAtIndex forTaskAtIndex:(NSInteger)taskIndex
+{
+    NSInteger taskId = [self taskIdAtIndex:taskIndex];
+    [self.answers setObject:@(alternativeAtIndex) forKey:@(taskId)];
+}
+
+#pragma mark -- Getters
+
+- (NSInteger)taskIdAtIndex:(NSInteger)index
+{
+    NSInteger result = 0;
+    if (index < self.totalTasksCount)
+    {
+        result = [[self.tasksIds objectAtIndex:index] integerValue];
+    }
+    return result;
 }
 
 - (NSArray *)alternativesForTaskAtIndex:(NSInteger)taskIndex
@@ -167,18 +183,6 @@
         }
     }
     return result;
-}
-
-- (void)skipTaskAtIndex:(NSInteger)taskIndex
-{
-    NSInteger taskId = [self taskIdAtIndex:taskIndex];
-    [self.answers setObject:@(-1) forKey:@(taskId)];
-}
-
-- (void)selectAlternativeAtIndex:(NSInteger)alternativeAtIndex forTaskAtIndex:(NSInteger)taskIndex
-{
-    NSInteger taskId = [self taskIdAtIndex:taskIndex];
-    [self.answers setObject:@(alternativeAtIndex) forKey:@(taskId)];
 }
 
 - (NSInteger)answerIndexForTaskAtIndex:(NSInteger)taskIndex
