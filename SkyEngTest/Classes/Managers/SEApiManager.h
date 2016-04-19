@@ -13,6 +13,7 @@ typedef void(^SEApiManagerGetObjectsHandler)(NSArray *objects, NSError *error);
 @interface SEApiManager : NSObject
 
 - (NSOperation *)apiGetWordTasksForMeaningIds:(NSArray *)ids
+                                   imageWidth:(CGFloat)imageWidth
                                       handler:(SEApiManagerGetObjectsHandler)handler;
 
 @end

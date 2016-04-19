@@ -188,7 +188,9 @@
 {
     NSArray *tasksIds = [self.serviceLocator.stateManager trainingSessionTasksIds];
     __weak typeof(self) welf = self;
+    
     [self.serviceLocator.apiManager apiGetWordTasksForMeaningIds:tasksIds
+                                                      imageWidth:CGRectGetWidth(self.viewController.view.bounds)*[UIScreen mainScreen].scale
                                                          handler:
     ^(NSArray *objects, NSError *error)
     {

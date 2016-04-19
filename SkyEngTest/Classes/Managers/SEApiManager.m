@@ -15,7 +15,8 @@
 @implementation SEApiManager
 
 - (NSOperation *)apiGetWordTasksForMeaningIds:(NSArray *)ids
-                                      handler:(SEApiManagerGetObjectsHandler)handler
+                                   imageWidth:(CGFloat)imageWidth
+                                      handler:(SEApiManagerGetObjectsHandler)handler;
 {
     NSMutableDictionary *params = [NSMutableDictionary new];
     if (ids.count)
@@ -23,7 +24,7 @@
         NSString *list = [ids componentsJoinedByString:@","];
         [params setObject:list forKey:@"meaningIds"];
     }
-    [params setObject:@(CGRectGetWidth([UIScreen mainScreen].bounds))
+    [params setObject:@(imageWidth)
                forKey:@"width"];
     
     NSOperation *operation = (NSOperation *)[SEApiHelper GET_url:API_WORD_TASKS
