@@ -12,10 +12,11 @@
 #import <SVProgressHUD.h>
 #import <PureLayout.h>
 
+#import "UICollectionView+Helpers.h"
+
 #import "SETrainingStartCell.h"
 #import "SETrainingTaskCell.h"
 #import "SETrainingResultCell.h"
-
 #import "SEProgressBarView.h"
 
 @interface SETrainingViewController ()
@@ -33,6 +34,8 @@ SETrainingResultCellDelegate>
 @end
 
 @implementation SETrainingViewController
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -101,26 +104,60 @@ SETrainingResultCellDelegate>
     [self.collectionView reloadData];
 }
 
+- (void)reset
+{
+    self.progressBar.progress = 0;
+    [self.collectionView reloadData];
+}
+
 - (void)showStartAnimated:(BOOL)animated
 {
-    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    if ([self.collectionView hasCellAtIndexPath:indexPath])
+    {
+        [self.collectionView scrollToItemAtIndexPath:indexPath
+                                    atScrollPosition:UICollectionViewScrollPositionLeft
+                                            animated:animated];
+    }
 }
 
-- (void)showResultsWithCorrect:(NSInteger)correct total:(NSInteger)total animated:(BOOL)animated
+- (void)showResultsWithCorrect:(NSInteger)correct
+                         total:(NSInteger)total
+                      animated:(BOOL)animated
 {
     self.correct = correct;
-    NSInteger row = [self.collectionView numberOfItemsInSection:0]-1;
-    NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:path
-                                atScrollPosition:UICollectionViewScrollPositionLeft
-                                        animated:animated];
+    if ([self.collectionView numberOfSections] > 0)
+    {
+        NSInteger row = [self.collectionView numberOfItemsInSection:0]-1;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        if ([self.collectionView hasCellAtIndexPath:indexPath])
+        {
+            [self.collectionView scrollToItemAtIndexPath:indexPath
+                                        atScrollPosition:UICollectionViewScrollPositionLeft
+                                                animated:animated];
+        }
+    }
 }
 
-- (void)showTaskAtIndex:(NSInteger)index animated:(BOOL)animated
+- (void)showTaskAtIndex:(NSInteger)index
+               animated:(BOOL)animated
 {
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index+1 inSection:0]
-                                atScrollPosition:UICollectionViewScrollPositionLeft
-                                        animated:animated];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index+1 inSection:0];
+    if ([self.collectionView hasCellAtIndexPath:indexPath])
+    {
+        [self.collectionView scrollToItemAtIndexPath:indexPath
+                                    atScrollPosition:UICollectionViewScrollPositionLeft
+                                            animated:animated];
+    }
+}
+
+- (void)showTaskInfoAtIndex:(NSInteger)taskIndex
+{
+    SETrainingTaskCell *cell = (SETrainingTaskCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:taskIndex+1 inSection:0]];
+    if ([cell isKindOfClass:[SETrainingTaskCell class]])
+    {
+        [cell showTaskInfo];
+    }
 }
 
 - (void)highlightItemAtIndex:(NSInteger)index asCorrect:(BOOL)correct forTaskAtIndex:(NSInteger)taskIndex
@@ -132,13 +169,23 @@ SETrainingResultCellDelegate>
     }
 }
 
-- (void)showTaskInfoAtIndex:(NSInteger)taskIndex;
+- (void)showProgress:(double)progress animated:(BOOL)animated
 {
-    SETrainingTaskCell *cell = (SETrainingTaskCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:taskIndex+1 inSection:0]];
-    if ([cell isKindOfClass:[SETrainingTaskCell class]])
+    if (animated)
     {
-        [cell showTaskInfo];
+        __weak typeof(self) welf = self;
+        [UIView animateWithDuration:0.5
+                         animations:
+         ^
+        {
+            welf.progressBar.alpha = 1;
+        }];
+    } else
+    {
+        self.progressBar.alpha = 1;
     }
+    
+    [self.progressBar setProgress:progress animated:animated];
 }
 
 - (void)hideProgressAnimated:(BOOL)animated
@@ -149,19 +196,13 @@ SETrainingResultCellDelegate>
         [UIView animateWithDuration:0.5
                          animations:
          ^
-        {
-            welf.progressBar.alpha = 0;
-        }];
+         {
+             welf.progressBar.alpha = 0;
+         }];
     } else
     {
         self.progressBar.alpha = 0;
     }
-}
-
-- (void)showProgress:(double)progress animated:(BOOL)animated
-{
-    self.progressBar.alpha = 1;
-    [self.progressBar setProgress:progress animated:animated];
 }
 
 - (void)showErrorWithMessage:(NSString *)message
@@ -172,10 +213,10 @@ SETrainingResultCellDelegate>
              cancelButtonTitle:NSLS(@"Повторить")
              otherButtonTitles:nil
                       tapBlock:
-    ^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex)
-    {
-        [welf.output alertActionRepeat];
-    }];
+     ^(UIAlertView *alertView, NSInteger buttonIndex)
+     {
+         [welf.output alertActionRepeat];
+     }];
 }
 
 - (void)showLoader
@@ -188,22 +229,17 @@ SETrainingResultCellDelegate>
     [SVProgressHUD popActivity];
 }
 
-- (void)reset
-{
-    self.progressBar.progress = 0;
-    self.tasksCount = 0;
-    self.correct = 0;
-    [self.collectionView reloadData];
-}
-
 #pragma mark - UICollectionViewDataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section
 {
+    // 1 item per task + start + finish
     return self.tasksCount+2;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = nil;
     
@@ -233,7 +269,11 @@ SETrainingResultCellDelegate>
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell isKindOfClass:[SETrainingTaskCell class]])
     {
@@ -245,8 +285,6 @@ SETrainingResultCellDelegate>
         [c configureWithCorrect:self.correct total:self.tasksCount];
     }
 }
-
-#pragma mark - UICollectionViewDelegate
 
 #pragma mark – UICollectionViewDelegateFlowLayout
 

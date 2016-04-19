@@ -21,6 +21,7 @@
 @property (nonatomic, strong) SETrainingViewController *viewController;
 @property (nonatomic, strong) SEServiceLocator *serviceLocator;
 @property (nonatomic, strong) NSTimer *showAnswerTimer;
+@property (nonatomic, assign) BOOL lockSelectAnswer;
 
 @end
 
@@ -61,10 +62,11 @@
 - (void)didSelectAlternativeAtIndex:(NSInteger)index
 {
     // If we select an answer or skipped we can't select again
-    if (self.showAnswerTimer)
+    if (self.lockSelectAnswer)
     {
         return;
     }
+    self.lockSelectAnswer = YES;
     self.showAnswerTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                             target:self
                                                           selector:@selector(_showTaskInfoTrigger)
@@ -78,10 +80,11 @@
 - (void)didSkipTask
 {
     // If we select an answer or skipped we can't select again
-    if (self.showAnswerTimer)
+    if (self.lockSelectAnswer)
     {
         return;
     }
+    self.lockSelectAnswer = YES;
     self.showAnswerTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                             target:self
                                                           selector:@selector(_showTaskInfoTrigger)
@@ -101,6 +104,7 @@
 
 - (void)actionNext
 {
+    self.lockSelectAnswer = NO;
     [self.serviceLocator.stateManager trainingSessionNextTask];
     if ([self.serviceLocator.stateManager trainingSessionIsFinished])
     {

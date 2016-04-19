@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3DDF8FCBDEE8C2BBE62C761E /* libPods-SkyEngTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB04EA5E6603E07E30C47597 /* libPods-SkyEngTest.a */; };
 		53101D551CC650CF00DE62D6 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 53101D541CC650CF00DE62D6 /* NSString+Helpers.m */; };
+		53101D581CC654F100DE62D6 /* UICollectionView+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 53101D571CC654F100DE62D6 /* UICollectionView+Helpers.m */; };
 		5349C5A81CC029C0006B7EC9 /* SEApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5349C5A71CC029C0006B7EC9 /* SEApiManager.m */; };
 		5349C5AB1CC029D0006B7EC9 /* SEServiceLocator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5349C5AA1CC029D0006B7EC9 /* SEServiceLocator.m */; };
 		5349C5AF1CC02BBD006B7EC9 /* SEAppDependency.m in Sources */ = {isa = PBXBuildFile; fileRef = 5349C5AE1CC02BBD006B7EC9 /* SEAppDependency.m */; };
@@ -69,6 +70,8 @@
 /* Begin PBXFileReference section */
 		53101D531CC650CF00DE62D6 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		53101D541CC650CF00DE62D6 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
+		53101D561CC654F100DE62D6 /* UICollectionView+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Helpers.h"; sourceTree = "<group>"; };
+		53101D571CC654F100DE62D6 /* UICollectionView+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+Helpers.m"; sourceTree = "<group>"; };
 		5349C5A41CC028B1006B7EC9 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = Support/PrefixHeader.pch; sourceTree = "<group>"; };
 		5349C5A51CC028CA006B7EC9 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Support/Constants.h; sourceTree = "<group>"; };
 		5349C5A61CC029C0006B7EC9 /* SEApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEApiManager.h; sourceTree = "<group>"; };
@@ -282,6 +285,8 @@
 				53F2D40C1CC5143C005C85AB /* NSMutableArray+Helpers.m */,
 				53101D531CC650CF00DE62D6 /* NSString+Helpers.h */,
 				53101D541CC650CF00DE62D6 /* NSString+Helpers.m */,
+				53101D561CC654F100DE62D6 /* UICollectionView+Helpers.h */,
+				53101D571CC654F100DE62D6 /* UICollectionView+Helpers.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -638,6 +643,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53101D581CC654F100DE62D6 /* UICollectionView+Helpers.m in Sources */,
 				535F67A51CC3C449003AC1AA /* SETrainingViewController.m in Sources */,
 				5349C5D61CC02DE2006B7EC9 /* APLFileSystem.m in Sources */,
 				5349C5DF1CC02DE2006B7EC9 /* UIColor+APL.m in Sources */,

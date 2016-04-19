@@ -14,17 +14,21 @@
 @protocol SETrainingViewInput <NSObject>
 
 - (void)configWithTasksCount:(NSInteger)tasksCount;
+- (void)reset;
+
 - (void)showStartAnimated:(BOOL)animated;
 - (void)showResultsWithCorrect:(NSInteger)correct total:(NSInteger)total animated:(BOOL)animated;
 - (void)showTaskAtIndex:(NSInteger)index animated:(BOOL)animated;
-- (void)highlightItemAtIndex:(NSInteger)index asCorrect:(BOOL)correct forTaskAtIndex:(NSInteger)taskIndex;
 - (void)showTaskInfoAtIndex:(NSInteger)index;
-- (void)hideProgressAnimated:(BOOL)animated;
+
+- (void)highlightItemAtIndex:(NSInteger)index asCorrect:(BOOL)correct forTaskAtIndex:(NSInteger)taskIndex;
+
 - (void)showProgress:(double)progress animated:(BOOL)animated;
+- (void)hideProgressAnimated:(BOOL)animated;
+
 - (void)showErrorWithMessage:(NSString *)message;
 - (void)showLoader;
 - (void)hideLoader;
-- (void)reset;
 
 @end
 
