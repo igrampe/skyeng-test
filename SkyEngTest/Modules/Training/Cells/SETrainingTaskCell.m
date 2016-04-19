@@ -113,12 +113,6 @@ SMAsyncImageViewDelegate>
                                       CGRectGetWidth(self.bounds),
                                       height);
     
-    size = [self.answerLabel sizeThatFits:CGSizeMake(CGRectGetWidth(self.bounds)-32, CGRectGetHeight(self.bounds))];
-    self.answerLabel.frame = CGRectMake(CGRectGetWidth(self.bounds)+(CGRectGetWidth(self.bounds)-size.width)/2,
-                                       CGRectGetMaxY(self.imageView.frame)+11,
-                                       size.width,
-                                       size.height);
-    
     offset = 32;
     if (CGRectGetHeight(self.bounds) < 568)
     {
@@ -128,6 +122,17 @@ SMAsyncImageViewDelegate>
     self.nextButton.frame = CGRectMake(CGRectGetWidth(self.bounds)+24,
                                        CGRectGetHeight(self.bounds)-offset-48,
                                        CGRectGetWidth(self.bounds)-24*2, 48);
+    
+    size = [self.answerLabel sizeThatFits:CGSizeMake(CGRectGetWidth(self.bounds)-32, CGRectGetHeight(self.bounds))];
+    offset = CGRectGetMaxY(self.imageView.frame)+11;
+    if (self.imageView.hidden)
+    {
+        offset = CGRectGetMinY(self.nextButton.frame)-65-size.height;
+    }
+    self.answerLabel.frame = CGRectMake(CGRectGetWidth(self.bounds)+(CGRectGetWidth(self.bounds)-size.width)/2,
+                                        offset,
+                                        size.width,
+                                        size.height);
     
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds)*2, CGRectGetHeight(self.bounds));
 }
@@ -141,6 +146,7 @@ SMAsyncImageViewDelegate>
     [self.tableView reloadData];
     
     NSString *imageUrlStr = [task.images firstObject];
+    self.imageView.hidden = YES;
     if (imageUrlStr)
     {
         [self.imageView setImageUrl:imageUrlStr];
@@ -252,8 +258,15 @@ SMAsyncImageViewDelegate>
 
 #pragma mark - SMAsyncImageViewDelegate
 
-- (void)imageViewDidLoadImage:(SEAsyncImageView *)imageView
+- (void)imageViewDidFinishLoadImage:(SEAsyncImageView *)imageView
 {
+    self.imageView.hidden = NO;
+    [self layoutSubviews];
+}
+
+- (void)imageView:(SEAsyncImageView *)imageView didFailLoadImageWithError:(NSError *)error
+{
+    self.imageView.hidden = YES;
     [self layoutSubviews];
 }
 

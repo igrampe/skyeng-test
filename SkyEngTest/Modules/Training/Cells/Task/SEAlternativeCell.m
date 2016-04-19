@@ -46,9 +46,7 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.actionButton = [SERoundedButton newAutoLayoutView];
     self.actionButton.userInteractionEnabled = NO;
-//    [self.actionButton addTarget:self
-//                          action:@selector(buttonAction)
-//                forControlEvents:UIControlEventTouchUpInside];
+    self.actionButton.titleLabel.numberOfLines = 0;
     [self.contentView addSubview:self.actionButton];
     
     [self setupConstraints];

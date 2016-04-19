@@ -61,7 +61,14 @@
             ^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
             {
                 [welf.activityView stopAnimating];
-                [welf.delegate imageViewDidLoadImage:welf];
+                if (error)
+                {
+                    [welf.delegate imageView:welf didFailLoadImageWithError:error];
+                } else
+                {
+                    [welf.delegate imageViewDidFinishLoadImage:welf];
+                }
+                
                 if (animated)
                 {
                     welf.layer.opacity = 0;

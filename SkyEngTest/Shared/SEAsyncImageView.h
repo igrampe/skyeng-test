@@ -12,7 +12,8 @@
 
 @protocol SMAsyncImageViewDelegate <NSObject>
 
-- (void)imageViewDidLoadImage:(SEAsyncImageView *)imageView;
+- (void)imageViewDidFinishLoadImage:(SEAsyncImageView *)imageView;
+- (void)imageView:(SEAsyncImageView *)imageView didFailLoadImageWithError:(NSError *)error;
 
 @end
 
