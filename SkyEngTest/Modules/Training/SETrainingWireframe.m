@@ -16,6 +16,8 @@
 
 #import "SEWordTaskPonso.h"
 
+static const NSInteger kSETrainingWireframeTasksCount = 10;
+
 @interface SETrainingWireframe ()
 
 @property (nonatomic, strong) SETrainingViewController *viewController;
@@ -97,7 +99,7 @@
 
 - (void)actionStart
 {
-    [self.serviceLocator.stateManager trainingSessionGenerateWithTasksCount:3];
+    [self.serviceLocator.stateManager trainingSessionGenerateWithTasksCount:kSETrainingWireframeTasksCount];
     [self.viewController showLoader];
     [self _obtainInfoForTrainingSession];
 }
