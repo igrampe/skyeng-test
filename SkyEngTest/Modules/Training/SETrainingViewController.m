@@ -84,7 +84,12 @@ SETrainingResultCellDelegate>
     
     [self.progressBar autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:48];
     [self.progressBar autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:48];
-    [self.progressBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:36];
+    CGFloat topInset = 36;
+    if (CGRectGetHeight(self.view.bounds) < 568)
+    {
+        topInset = 24;
+    }
+    [self.progressBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:topInset];
     [self.progressBar autoSetDimension:ALDimensionHeight toSize:8];
 }
 

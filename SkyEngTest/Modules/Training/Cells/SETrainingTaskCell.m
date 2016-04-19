@@ -89,8 +89,14 @@ SMAsyncImageViewDelegate>
     [super layoutSubviews];
     self.scrollView.frame = self.bounds;
     
+    CGFloat offset = 76;
+    if (CGRectGetHeight(self.bounds) < 568)
+    {
+        offset = 48;
+    }
+    
     CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(CGRectGetWidth(self.bounds)-32, CGRectGetHeight(self.bounds))];
-    self.titleLabel.frame = CGRectMake((CGRectGetWidth(self.bounds)-size.width)/2, 76, size.width, size.height);
+    self.titleLabel.frame = CGRectMake((CGRectGetWidth(self.bounds)-size.width)/2, offset, size.width, size.height);
     
     CGFloat height = [SEAlternativeCell height]*[self tableView:self.tableView numberOfRowsInSection:0];
     self.tableView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-height, CGRectGetWidth(self.bounds), height);
@@ -113,8 +119,14 @@ SMAsyncImageViewDelegate>
                                        size.width,
                                        size.height);
     
+    offset = 32;
+    if (CGRectGetHeight(self.bounds) < 568)
+    {
+        offset = 16;
+    }
+    
     self.nextButton.frame = CGRectMake(CGRectGetWidth(self.bounds)+24,
-                                       CGRectGetHeight(self.bounds)-32-48,
+                                       CGRectGetHeight(self.bounds)-offset-48,
                                        CGRectGetWidth(self.bounds)-24*2, 48);
     
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds)*2, CGRectGetHeight(self.bounds));
