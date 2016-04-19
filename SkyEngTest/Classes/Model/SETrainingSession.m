@@ -37,35 +37,6 @@
     return self;
 }
 
-#pragma mark - NSCoding
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    if (self.meaningRandomIndexesSet)
-    {
-        [aCoder encodeObject:self.meaningRandomIndexesSet forKey:NSStringFromSelector(@selector(meaningRandomIndexesSet))];
-    }
-    [aCoder encodeObject:@(self.currentTaskIndex) forKey:NSStringFromSelector(@selector(currentTaskIndex))];
-    [aCoder encodeObject:@(self.totalTasksCount) forKey:NSStringFromSelector(@selector(totalTasksCount))];
-    if (self.tasksIds)
-    {
-        [aCoder encodeObject:self.tasksIds forKey:NSStringFromSelector(@selector(tasksIds))];
-    }
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if (self)
-    {
-        self.meaningRandomIndexesSet = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(meaningRandomIndexesSet))];
-        self.tasksIds = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(tasksIds))];
-        self.currentTaskIndex = [[aDecoder decodeObjectForKey:NSStringFromSelector(@selector(currentTaskIndex))] integerValue];
-        self.totalTasksCount = [[aDecoder decodeObjectForKey:NSStringFromSelector(@selector(totalTasksCount))] integerValue];
-    }
-    return self;
-}
-
 #pragma mark - Private
 
 - (NSArray *)_randomAlternativesWithCount:(NSInteger)count fromAlternatives:(NSArray *)alternatives

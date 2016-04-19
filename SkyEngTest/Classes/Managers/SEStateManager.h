@@ -16,7 +16,6 @@
 @property (nonatomic, weak) SEServiceLocator *serviceLocator;
 
 - (void)restartTrainingSessionWithTasksCount:(NSInteger)tasksCount;
-- (void)saveTrainingSession;
 
 - (BOOL)isTrainingSessionStarted;
 - (void)startTrainingSession;

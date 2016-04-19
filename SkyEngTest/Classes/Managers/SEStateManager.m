@@ -11,8 +11,6 @@
 #import "SEServiceLocator.h"
 #import "SEDataManager.h"
 
-NSString *const kSEStateManagerKeyLastTrainingSession = @"kSEStateManagerKeyLastTrainingSession";
-
 @interface SEStateManager ()
 
 @property (nonatomic, strong, readwrite) SETrainingSession *trainingSession;
@@ -26,7 +24,7 @@ NSString *const kSEStateManagerKeyLastTrainingSession = @"kSEStateManagerKeyLast
     self = [super init];
     if (self)
     {
-        [self recoverLastTrainingSession];
+        self.trainingSession = [SETrainingSession new];
     }
     return self;
 }
@@ -34,18 +32,6 @@ NSString *const kSEStateManagerKeyLastTrainingSession = @"kSEStateManagerKeyLast
 - (void)start
 {
     
-}
-
-- (void)recoverLastTrainingSession
-{
-    NSData *data = [USER_DEFAULTS objectForKey:kSEStateManagerKeyLastTrainingSession];
-    if (data)
-    {
-        _trainingSession = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    } else
-    {
-        _trainingSession = [SETrainingSession new];
-    }
 }
 
 #pragma mark - Public
@@ -57,13 +43,6 @@ NSString *const kSEStateManagerKeyLastTrainingSession = @"kSEStateManagerKeyLast
     NSArray *ids = [self.serviceLocator.dataManager meaningsIdsForRndIndexes:rndIndexes];
     NSAssert(ids.count == rndIndexes.count, NSLS(@"Неверное количество идентификаторов слов"));
     self.trainingSession.tasksIds = ids;
-}
-
-- (void)saveTrainingSession
-{
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_trainingSession];
-    [USER_DEFAULTS setObject:data forKey:kSEStateManagerKeyLastTrainingSession];
-    [USER_DEFAULTS synchronize];
 }
 
 - (BOOL)isTrainingSessionStarted
@@ -144,16 +123,6 @@ NSString *const kSEStateManagerKeyLastTrainingSession = @"kSEStateManagerKeyLast
 - (void)trainingSessionReset
 {
     [self.trainingSession reset];
-}
-
-#pragma mark - Setters
-
-- (void)setTrainingSession:(SETrainingSession *)trainingSession
-{
-    _trainingSession = trainingSession;
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_trainingSession];
-    [USER_DEFAULTS setObject:data forKey:kSEStateManagerKeyLastTrainingSession];
-    [USER_DEFAULTS synchronize];
 }
 
 @end

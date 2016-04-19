@@ -10,7 +10,7 @@
 
 @class SEWordTaskPonso;
 
-@interface SETrainingSession : NSObject <NSCoding>
+@interface SETrainingSession : NSObject
 
 @property (nonatomic, strong) NSArray *tasksIds;
 @property (nonatomic, assign) NSInteger currentTaskIndex;
