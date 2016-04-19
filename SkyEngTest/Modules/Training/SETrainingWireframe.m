@@ -167,8 +167,10 @@ static const NSInteger kSETrainingWireframeTasksCount = 10;
     NSInteger currentTaskIndex = [self.serviceLocator.stateManager trainingSessionCurrentTaskIndex];
     NSInteger correctIndex = [self.serviceLocator.stateManager trainingSessionCorrectAlternativeIndexForTaskAtIndex:currentTaskIndex];
     NSInteger answerIndex = [self.serviceLocator.stateManager trainingSessionAnswerIndexForTaskAtIndex:currentTaskIndex];
-    [self.viewController highlightItemAtIndex:correctIndex asCorrect:YES forTaskAtIndex:currentTaskIndex];
-    if (answerIndex != correctIndex)
+    if (answerIndex == correctIndex)
+    {
+        [self.viewController highlightItemAtIndex:answerIndex asCorrect:YES forTaskAtIndex:currentTaskIndex];
+    } else
     {
         [self.viewController highlightItemAtIndex:answerIndex asCorrect:NO forTaskAtIndex:currentTaskIndex];
     }
